@@ -68,25 +68,30 @@ Si estás aprendiendo sobre agentes, así es como funciona Toto por debajo:
 2. Abrí una terminal en la carpeta del proyecto y creá un entorno virtual:
    ```bash
    python -m venv env
+   ```
 3. Activá el entorno:
-    - En Windows:
+    - Windows:
     ```bash
     .\env\Scripts\Activate.ps1
-    - En Mac/Linux:
+    ```
+    - Mac/Linux:
     ```bash
     source env/bin/Activate
+    ```
 4. Instalá la dependencia de conexión con el comando:
     ```bash
     pip install openai
+    ```
 5. ¡Encendé a Toto! con el comando:
     ```bash
     python .\main.py
+    ```
 
 ---
 
 ## 🔮 Roadmap y Futuro del Proyecto
 
-Las posibilidades de escalabilidad de este diseño son inmensas. Mis próximos pasos para evolucionar a Toto son:
+Las posibilidades de escalabilidad de este proyecto son inmensas. Mis próximos pasos para evolucionar a Toto son:
 
 1. **Integración de Servidores MCP**: Conectar el esquema de herramientas actual con herramientas estándar de la industria para que pueda por ejemplo, leer repositorios de GitHub o ejecutar navegadores web automatizados.
 2. **Memoria Vectorial (RAG)**: Incorporar una base de datos vectorial local para que Toto pueda leer miles de PDFs de documentación técnica y responder en base a ellos.
