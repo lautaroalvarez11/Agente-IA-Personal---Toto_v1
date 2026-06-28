@@ -11,10 +11,10 @@ Este proyecto es la semilla de un ecosistema mucho más grande. La arquitectura 
 
 ## 🚀 Características Principales
 
-- **🧠 Memoria Contextual:** Mantiene el hilo de la conversación en tiempo real.
-- **🛠️ Uso de Herramientas (Tool Calling):** Capacidad para interactuar con el sistema operativo (listar, leer y crear/editar archivos).
-- **🔒 100% Privado y Local:** Funciona sin internet utilizando [Ollama](https://ollama.com/) de fondo. Tus datos y archivos nunca salen de tu computadora.
-- **🛡️ Sandboxing y Seguridad:** Implementación de programación defensiva para evitar que la IA ejecute comandos destructivos o lea directorios sensibles.
+- **Memoria Contextual:** Mantiene el hilo de la conversación en tiempo real.
+- **Uso de Herramientas (Tool Calling):** Capacidad para interactuar con el sistema operativo (listar, leer y crear/editar archivos).
+- **100% Privado y Local:** Funciona sin internet utilizando [Ollama](https://ollama.com/) de fondo. Tus datos y archivos nunca salen de tu computadora.
+- **Sandboxing y Seguridad:** Implementación de programación defensiva para evitar que la IA ejecute comandos destructivos o lea directorios sensibles.
 
 ---
 
