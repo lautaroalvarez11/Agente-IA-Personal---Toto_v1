@@ -40,6 +40,8 @@ while True:
     # Guardamos la petición del usuario en el historial centralizado del agente
     agent.messages.append({"role": "user", "content": user_input})
 
+
+
     # ==========================================
     # 3. Bucle Secundario (El "Cerebro" del Agente)
     # ==========================================
