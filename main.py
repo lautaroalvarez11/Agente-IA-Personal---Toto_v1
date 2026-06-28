@@ -1,61 +1,72 @@
 from openai import OpenAI
-import os
-import json
-from agent import Agent
+from agent import Agent  # Importamos la clase Agent que contiene la memoria y las herramientas
 
-# Conectamos la librería estándar de OpenAI a tu Ollama local
+# ==========================================
+# 1. Configuración del Cliente
+# ==========================================
+# Usamos la librería oficial de OpenAI, pero al sistema
+# le decimos que apunte a nuestro servidor local de Ollama.
 client = OpenAI(
-    base_url='http://localhost:11434/v1',
-    api_key='ollama', # Se pone por protocolo, pero no valida nada
+    base_url='http://localhost:11434/v1', # Puerto local por defecto de Ollama
+    api_key='ollama',                     # Requerido por la librería, pero ignorado localmente
 )
 
-# Modelo elegido para el agente:
+# Qwen es un modelo altamente optimizado para el uso de herramientas (Tool Calling)
 selected_model = "qwen3:1.7b"
 
-# Instanciamos a Toto
+# Instanciamos nuestro agente Toto, que contiene la memoria y las herramientas
 agent = Agent()
 
-print("\n🤖 Toto está en línea. Escribí 'salir' o 'bye' para terminar.\n")
+print("\n🤖 ¡Hola Soy Toto! tu asistente personal, pedime algo o ingresá 'salir'/'bye' para terminar la sesión.\n")
 
-# Bucle principal del chatbot
+
+
+# ==========================================
+# 2. Bucle Principal (Interacción con el usuario)
+# ==========================================
 while True:
+    # Esperamos la entrada del usuario
     user_input = input("👤 Vos: ").strip()
 
-    # Validamos si el usuario no escribió nada
+    # Evitamos procesar mensajes vacíos
     if not user_input:
-        print("No se ingresó ningún mensaje. Por favor, intente de nuevo.")
         continue
     
-    # Validamos si el usuario quiere salir del chat
+    # Condición de salida del programa
     if user_input.lower() in ("salir", "exit", "bye"):
         print("🤖 Toto: ¡Nos vemos!")
         break
 
-    # Agregamos el mensaje del usuario al historial centralizado en el agente
+    # Guardamos la petición del usuario en el historial centralizado del agente
     agent.messages.append({"role": "user", "content": user_input})
 
-    # Bucle secundario: Se mantiene girando si Toto decide usar una herramienta
+    # ==========================================
+    # 3. Bucle Secundario (El "Cerebro" del Agente)
+    # ==========================================
+    # Este bucle sigue girando automáticamente si el agente decide que necesita 
+    # usar herramientas antes de darle la respuesta final al usuario.
     while True:
         try:
-            # Llamada a la API local usando el estándar de OpenAI
+            # Enviamos el historial completo y el catálogo de herramientas a Ollama
             response = client.chat.completions.create(
                 model=selected_model,
                 messages=agent.messages,
                 tools=agent.tools
             )
 
-            # Extraemos el objeto de mensaje devuelto por el modelo
+            # Extraemos la respuesta bruta generada por el modelo
             assistant_msg = response.choices[0].message
 
-            # Le pasamos el mensaje a la clase Agent para que lo procese
-            # Retorna True si ejecutó una herramienta, False si es texto final
+            # Delegamos el procesamiento del mensaje a la clase Agent en agent.py.
+            # Retorna True si ejecutó una herramienta, False si es texto final.
             called_tool = agent.process_response(assistant_msg)
 
-            # Si el agente no llamó a ninguna herramienta, rompemos este sub-bucle 
-            # y volvemos a esperar el input del usuario
+            # Si el agente respondió con texto natural (no utilizó herramientas),
+            # rompemos este sub-bucle y volvemos a escuchar al usuario.
             if not called_tool:
                 break
                 
         except Exception as e:
+            # Capturamos errores (ej. si Ollama está apagado) para no tirar el programa
             print(f"\n❌ Error de conexión o ejecución: {e}\n")
             break
