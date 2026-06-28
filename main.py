@@ -9,10 +9,36 @@ client = OpenAI(
 # Modelo elegido para el agente (puede modificarse):
 selected_model = "llama3.2:1b"
 
-response = client.responses.create(
-    model = (selected_model),
-    input = "Hola, ¿cómo estás?"
-)
+# Contiene el historial de mensajes entre el usuario y el agente
+messages = [
+    {"role": "system", "content": "Eres un asistente personal útil que habla español, detallista, amable y con perfil técnico."}
+]
 
-print(response.output_text)
+while True:
+    user_input = input("Ingrese un mensaje: ").strip()
+
+    # Validamos si el usuario no escribió nada
+    if not user_input:
+        print("No se ingresó ningún mensaje. Por favor, intente de nuevo.")
+        continue
+    
+    # Validamos si el usuario quiere salir del chat
+    if user_input.lower() in ("salir", "exit", "bye"):
+        print("Saliendo del chat. ¡Hasta luego!")
+        break
+
+    # Agregamos el mensaje del usuario al historial
+    messages.append({"role": "user", "content": user_input})
+
+
+    response = client.responses.create(
+        model = (selected_model),
+        input = messages
+    )
+
+    # Obtenemos la respuesta del agente y la agregamos al historial
+    assistant_reply = response.output_text
+    messages.append({"role": "assistant", "content": assistant_reply})
+
+    print(f"Respuesta del agente: {assistant_reply}")
 
