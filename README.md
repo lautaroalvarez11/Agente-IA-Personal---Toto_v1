@@ -1,6 +1,6 @@
-# 🤖 Agente de IA Personal - Toto (Local & Sin Frameworks)
+# 🤖 Agente de IA Personal - Toto (Local & Sin Frameworks) / v1
 
-¡Hola! Bienvenido al repositorio de **Toto**, mi primer Agente de Inteligencia Artificial personal. 
+¡Hola! Bienvenido al repositorio de la versión v1 de **Toto**, mi primer Agente de Inteligencia Artificial personal. 
 
 Mi nombre es Lautaro Ezequiel Álvarez.
 Como desarrollador adentrándome en el fascinante mundo de la IA, me propuse un desafío: **construir un agente autónomo desde cero, 100% local, y sin utilizar frameworks pesados** (como LangChain o CrewAI). El objetivo de este proyecto es entender a bajo nivel cómo funciona el razonamiento de un modelo, la inyección de memoria y la ejecución de herramientas (Tool Calling).
@@ -95,7 +95,7 @@ Las posibilidades de escalabilidad de este proyecto son inmensas. Mis próximos 
 
 1. **Integración de Servidores MCP**: Conectar el esquema de herramientas actual con herramientas estándar de la industria para que pueda por ejemplo, leer repositorios de GitHub o ejecutar navegadores web automatizados.
 2. **Memoria Vectorial (RAG)**: Incorporar una base de datos vectorial local para que Toto pueda leer miles de PDFs de documentación técnica y responder en base a ellos.
-3. **Interfaz Gráfica**: Mejorarle la UI de la terminal o en su defecto, migrar de la terminal de comandos a una interfaz web utilizando Streamlit o Gradio.
+3. **Interfaz Gráfica**: Mejorarle el diseño UI de la terminal o en su defecto, migrar de la terminal de comandos a una interfaz web utilizando Streamlit o Gradio.
 4. **Sistemas Multi-Agente**: Convertir a Toto en el "Agente Supervisor" que delegue tareas a sub-agentes especializados en código o investigación.
 
 ---

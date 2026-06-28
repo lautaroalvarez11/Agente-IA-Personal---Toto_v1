@@ -17,7 +17,7 @@ selected_model = "qwen3:1.7b"
 # Instanciamos nuestro agente Toto, que contiene la memoria y las herramientas
 agent = Agent()
 
-print("\n🤖 ¡Hola Soy Toto! tu asistente personal, pedime algo o ingresá 'salir'/'bye' para terminar la sesión.\n")
+print("\n🤖 ¡Hola Soy Toto - v1! tu asistente personal, ya podemos conversar o ingresá 'salir'/'bye' para terminar la sesión.\n")
 
 
 
