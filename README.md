@@ -69,10 +69,18 @@ Si estás aprendiendo sobre agentes, así es como funciona Toto por debajo:
    ```bash
    python -m venv env
 3. Activá el entorno:
-    - Windows:  .\env\Scripts\Activate.ps1
-    - Mac/Linux: source env/bin/Activate
-4. Instalá la dependencia de conexión con el comando: pip install openai
-5. ¡Encendé a Toto! con el comando: python .\main.py
+    - En Windows:
+    ```bash
+    .\env\Scripts\Activate.ps1
+    - En Mac/Linux:
+    ```bash
+    source env/bin/Activate
+4. Instalá la dependencia de conexión con el comando:
+    ```bash
+    pip install openai
+5. ¡Encendé a Toto! con el comando:
+    ```bash
+    python .\main.py
 
 ---
 
