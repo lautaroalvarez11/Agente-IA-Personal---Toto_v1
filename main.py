@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from openai import OpenAI
 from agent import Agent  # Importamos la clase Agent que contiene la memoria y las herramientas
 
@@ -8,7 +10,7 @@ from agent import Agent  # Importamos la clase Agent que contiene la memoria y l
 # le decimos que apunte a nuestro servidor local de Ollama.
 client = OpenAI(
     base_url='http://localhost:11434/v1', # Puerto local por defecto de Ollama
-    api_key='ollama',                     # Requerido por la librería, pero ignorado localmente
+    api_key=os.getenv("OPENAI_API_KEY", "ollama"), # Buscamos la clave en el entorno; si no existe, usamos "ollama" como fallback
 )
 
 # Qwen es un modelo altamente optimizado para el uso de herramientas (Tool Calling)
