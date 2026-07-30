@@ -100,10 +100,6 @@ Las posibilidades de escalabilidad de este proyecto son inmensas. Mis próximos 
 
 ---
 
-**Desarrollado con pasión, código y mucha prueba/error. ¡Cualquier feedback, issue o PR es bienvenido para seguir aprendiendo juntos!**
-
----
-
 ## 🛡️ Medidas de Seguridad Aplicadas (Vulnerabilidades Parcheadas)
 
 Basado en auditorías de seguridad (OWASP Top 10 para LLMs), la versión actual incluye defensas críticas:
@@ -112,6 +108,10 @@ Basado en auditorías de seguridad (OWASP Top 10 para LLMs), la versión actual 
 2. **Mitigación de "Excessive Agency" (Agencia Excesiva):** Para evitar modificaciones destructivas autónomas, se implementó un flujo de *Human-in-the-Loop*. Cada vez que Toto intenta editar o crear un archivo, solicita confirmación explícita del usuario por consola (`s/n`).
 3. **Restricción de Comportamiento:** Refuerzo de las directivas en el *System Prompt* del agente, limitando su jurisdicción estrictamente al entorno seguro.
 4. **Protección de Credenciales:** Carga segura de variables de entorno con `dotenv` e inclusión del `.env` en el archivo `.gitignore` para prevenir exposición accidental de claves.
+
+---
+
+**Desarrollado con pasión, código y mucha prueba/error. ¡Cualquier feedback, issue o PR es bienvenido para seguir aprendiendo juntos!**
 
 ---
 
