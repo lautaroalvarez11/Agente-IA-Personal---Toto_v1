@@ -3,6 +3,9 @@ import json
 
 class Agent:
     def __init__(self):
+        # Directorio base para el sandbox de seguridad
+        self.base_dir = os.path.abspath(".")
+        
         # Cargamos las herramientas disponibles al iniciar el agente
         self.setup_tools()
         
@@ -11,7 +14,7 @@ class Agent:
         self.messages = [
             {
                 "role": "system", 
-                "content": "Eres Toto, mi asistente de inteligencia artificial personal y técnico. TIENES ACCESO COMPLETO a mi sistema local a través de las herramientas (tools) que se te proporcionan. REGLA OBLIGATORIA: Si te pido interactuar con mis archivos (como listar, leer o crear), DEBES invocar obligatoriamente la herramienta correspondiente. NUNCA te disculpes ni digas que no tienes acceso al sistema."
+                "content": "Eres Toto, mi asistente de inteligencia artificial personal y técnico. Tienes acceso a un entorno seguro (sandbox) en el directorio actual mediante tus herramientas. REGLA OBLIGATORIA: Si te pido interactuar con archivos, DEBES invocar la herramienta correspondiente. NUNCA intentes salir del directorio permitido ni realizar tareas destructivas fuera de tu alcance."
             }
         ]
 
@@ -86,15 +89,18 @@ class Agent:
     # LÓGICA NATIVA DE LAS HERRAMIENTAS
     # ==========================================
     
+    def secure_path(self, target_path):
+        """Resuelve rutas absolutas y valida que no se escape del base_dir (Sandbox)."""
+        resolved_target = os.path.abspath(os.path.join(self.base_dir, target_path))
+        if not resolved_target.startswith(self.base_dir):
+            raise PermissionError("Acceso denegado: Intento de escape de directorio.")
+        return resolved_target
+
     def list_files_in_dir(self, directory="."):
-        # PARCHE DE SEGURIDAD (Sandboxing): 
-        # Evitamos que el modelo intente escanear directorios raíz por error.
-        if directory in ["/", "\\", "C:\\", "c:\\"]:
-            directory = "."
-            
         print(f"⚙️ [SISTEMA] Leyendo el directorio: {directory}")
         try:
-            files = os.listdir(directory)
+            safe_dir = self.secure_path(directory)
+            files = os.listdir(safe_dir)
             return {"files": files}
         except Exception as e:
             return {"error": str(e)}
@@ -102,8 +108,9 @@ class Agent:
     def read_file(self, path):
         print(f"⚙️ [SISTEMA] Leyendo el archivo: {path}")
         try:
+            safe_path = self.secure_path(path)
             # Usamos utf-8 para evitar problemas de codificación con tildes y caracteres especiales
-            with open(path, 'r', encoding='utf-8') as f:
+            with open(safe_path, 'r', encoding='utf-8') as f:
                 content = f.read()
                 return {"content": content}
         except Exception as e:
@@ -114,7 +121,8 @@ class Agent:
     def edit_file(self, path, prev_text, new_text):
         print(f"⚙️ [SISTEMA] Procesando el archivo: {path}")
         try:
-            existed = os.path.exists(path)
+            safe_path = self.secure_path(path)
+            existed = os.path.exists(safe_path)
             
             # Si el archivo existe y nos pasan texto a reemplazar, procedemos a editarlo
             if existed and prev_text:
@@ -131,12 +139,12 @@ class Agent:
                 content = content.replace(prev_text, new_text)
             else:
                 # Si no existe, creamos la estructura de carpetas necesaria y un archivo nuevo
-                dir_name = os.path.dirname(path)
+                dir_name = os.path.dirname(safe_path)
                 if dir_name:
                     os.makedirs(dir_name, exist_ok=True)
                 content = new_text
             
-            with open(path, 'w', encoding='utf-8') as f:
+            with open(safe_path, 'w', encoding='utf-8') as f:
                 f.write(content)
             
             action = "editado" if existed and prev_text else "creado"
@@ -204,9 +212,13 @@ class Agent:
                     
                 elif fn_name == "edit_file":
                     path = args_dict.get("path", "")
-                    prev_text = args_dict.get("prev_text", "")
-                    new_text = args_dict.get("new_text", "")
-                    resultado_herramienta = self.edit_file(path, prev_text, new_text)
+                    confirm = input(f"⚠️ ¿Permitir a Toto escribir/crear el archivo '{path}'? (s/n): ")
+                    if confirm.lower() == 's':
+                        prev_text = args_dict.get("prev_text", "")
+                        new_text = args_dict.get("new_text", "")
+                        resultado_herramienta = self.edit_file(path, prev_text, new_text)
+                    else:
+                        resultado_herramienta = {"error": "Operación cancelada por el usuario."}
                     print(f"⚙️ [SISTEMA] Resultado: {resultado_herramienta}")
                 else:
                     resultado_herramienta = {"error": f"Herramienta desconocida: {fn_name}"}
