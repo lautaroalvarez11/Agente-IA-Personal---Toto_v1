@@ -104,5 +104,16 @@ Las posibilidades de escalabilidad de este proyecto son inmensas. Mis próximos 
 
 ---
 
+## 🛡️ Medidas de Seguridad Aplicadas (Vulnerabilidades Parcheadas)
+
+Basado en auditorías de seguridad (OWASP Top 10 para LLMs), la versión actual incluye defensas críticas:
+
+1. **Prevención de Path Traversal (Control de Acceso):** Implementación de una función `secure_path` en `agent.py` que restringe absolutamente todas las operaciones de lectura y escritura al directorio del proyecto (`./`). El agente no puede escapar del Sandbox ni acceder a rutas sensibles del sistema.
+2. **Mitigación de "Excessive Agency" (Agencia Excesiva):** Para evitar modificaciones destructivas autónomas, se implementó un flujo de *Human-in-the-Loop*. Cada vez que Toto intenta editar o crear un archivo, solicita confirmación explícita del usuario por consola (`s/n`).
+3. **Restricción de Comportamiento:** Refuerzo de las directivas en el *System Prompt* del agente, limitando su jurisdicción estrictamente al entorno seguro.
+4. **Protección de Credenciales:** Carga segura de variables de entorno con `dotenv` e inclusión del `.env` en el archivo `.gitignore` para prevenir exposición accidental de claves.
+
+---
+
 ## 🧑‍💻​ Lautaro Ezequiel Álvarez
 LinkedIn: (https://www.linkedin.com/in/lautaro-ezequiel-álvarez)
